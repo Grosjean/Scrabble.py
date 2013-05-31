@@ -1,0 +1,1 @@
+This Python helps you to compute the value of a word in a game of scrabble.
