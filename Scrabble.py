@@ -16,8 +16,6 @@ scores = {"a": 1, "c": 3, "b": 3, "e": 1, "d": 2, "g": 2,
          "x": 8, "z": 10}
  
 wordList = []
-valid_list = []
-usedRack = []
 
 with open("C:\Users\AlexGrosjean\Documents\Python\Supplements\sowpods\sowpods.txt","r") as wordDoc:
 	for word in wordDoc:
@@ -28,7 +26,10 @@ print "Hello and welcome to the scrabble cheating engine!"
 		
 continueScrabble = True
 while continueScrabble:
-		
+	
+	valid_list = []
+	usedRack = []
+	
 	myRack = raw_input("Please enter your word: ")
 	myRack = myRack.upper()
 	print "...validating word against dictionary and computing values..."
@@ -68,7 +69,7 @@ while continueScrabble:
 	for word in valid_list:
 		wordListScore[word] = compute_score(word)
 		
-	if len(valid_list) > 50:
+	if len(valid_list) > 30:
 		print "...printing word to word document..."
 
 		fileLocation = os.path.join(r"C:\Users\AlexGrosjean\Documents\Python\Supplements\sowpods",myRack.title()+"WordList")
