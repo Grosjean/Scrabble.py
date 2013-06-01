@@ -1,8 +1,16 @@
 import os
 
 # Author: Alex Grosjean
-# takes a rack of letters for a game of scrabble as input
+# 31 March 2013
+# Takes a rack of letters for a game of scrabble as input
 # returns each possible word and the value
+
+def compute_score(word):
+	#value = 0
+	#for letter in word:
+	#	value += scores[letter.lower()]
+	#return value
+	return sum(scores[c.lower()] for c in word)
 
 scores = {"a": 1, "c": 3, "b": 3, "e": 1, "d": 2, "g": 2,
          "f": 4, "i": 1, "h": 4, "k": 5, "j": 8, "m": 3,
@@ -52,12 +60,6 @@ for dictWord in wordList:
 
 
 wordListScore = {}
-
-def compute_score(word):
-	value = 0
-	for letter in word:
-		value += scores[letter.lower()]
-	return value
 	
 for word in valid_list:
 	wordListScore[word] = compute_score(word)
