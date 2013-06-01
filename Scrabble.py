@@ -106,20 +106,24 @@ while continueScrabble:
 		
 		with open(fileLocation,"w") as wordDoc:
 			wordDoc.write("List of possible words that can be spelled with: " + myRack + "\n\n")
-			wordDoc.write("word \t : \t value\n")
-			wordDoc.write("----------------------\n")
+			wordDoc.write("word \t\t : \t value\n")
+			wordDoc.write("-----------------------------\n")
 			for word in sorted(wordListScore, key=wordListScore.get, reverse = True):
-				wordDoc.write(word + " \t : \t " + str(wordListScore[word]) + "\n")
+				if len(word) >= 7:
+					wordDoc.write(word + " \t : \t " + str(wordListScore[word]) + "\n")
+				else:
+					wordDoc.write(word + " \t\t : \t " + str(wordListScore[word]) + "\n")
 		print "Complete! Your scrabble words have been printed to your desktop: %s%s " % (myRack.title(),"WordList")
 		print "\t" + fileLocation
 		
 	else:
+		
 		print "There are %i words in your list:" % len(valid_list)
 		print "\tword \t : \t value"
 		print "\t----------------------"
 		for word in sorted(wordListScore, key=wordListScore.get, reverse=True):
 			print "\t" + word + " \t : \t " + str(wordListScore[word])
-	
+			
 	if len(myRack) > 1:
 		print "The largest value word in your rack is: %s : %i" % (max(wordListScore, key=wordListScore.get),wordListScore[max(wordListScore, key=wordListScore.get)])
 	
