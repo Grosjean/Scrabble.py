@@ -1,6 +1,7 @@
 import os, os.path
 import operator
 from urllib2 import urlopen
+from urllib2 import URLError
 
 # Author: Alex Grosjean
 # 31 March 2013
@@ -31,23 +32,35 @@ scores = {"a": 1, "c": 3, "b": 3, "e": 1, "d": 2, "g": 2,
          "x": 8, "z": 10}
  
 wordList = []
+continueScrabble = True
 	
 print "Hello and welcome to the scrabble cheating engine!\n"
-	
+
 fileLocation = get_fileLocation('Documents','','sowpods.txt')
 
 if not os.path.exists(fileLocation):
 	#if sowpods.txt is not saved in my documents then open up textfile from website and read each dictionary word
 	
-	print "\tCould not find sowpods dictionary file from local documents folder..."
+	print "\tCould not find sowpods dictionary file from the documents folder: %s" % (get_fileLocation('Documents','','sowpods.txt'))
 	print "\tOpening 3MB sowpods dictionary file from internet. This could take a few seconds..\n"
 	
-	target_url = "https://raw.github.com/Grosjean/Scrabble.py/master/sowpods.txt"
-	wordDoc = urlopen(target_url)
+	try:
 	
-	for word in wordDoc:
-		word = word.strip('\n')
-		wordList.append(word)
+		target_url = "https://raw.github.com/Grosjean/Scrabble.py/master/sowpods.txt"
+		wordDoc = urlopen(target_url)
+		
+		for word in wordDoc:
+			word = word.strip('\n')
+			wordList.append(word)
+			
+	except URLError:
+		
+		print "~" * 75
+		print "Uh oh.. looks like your firewall is preventing us from connecting to server."
+		print "Please save the 'sowpods.txt' file to your 'Documents' folder.\n"
+		print target_url
+		print "~" * 75
+		continueScrabble = False
 
 else:
 	#else... file IS saved in my documents lets open it and read each dictionary word
@@ -57,9 +70,6 @@ else:
 			word = word.strip('\n')
 			wordList.append(word)
 
-			
-
-continueScrabble = True
 
 while continueScrabble:
 	
@@ -102,7 +112,7 @@ while continueScrabble:
 	
 	if len(valid_list) > 30:
 			
-		fileLocation = get_fileLocation('Desktop','Scrabble',myRack.title() + "WordList.txt")
+		fileLocation = get_fileLocation('Desktop','Scrabble',myRack.title() + "_WordList.txt")
 		
 		with open(fileLocation,"w") as wordDoc:
 			wordDoc.write("List of possible words that can be spelled with: " + myRack + "\n\n")
@@ -125,8 +135,11 @@ while continueScrabble:
 			print "\t" + word + " \t : \t " + str(wordListScore[word])
 			
 	if len(myRack) > 1:
-		print "The largest value word in your rack is: %s : %i" % (max(wordListScore, key=wordListScore.get),wordListScore[max(wordListScore, key=wordListScore.get)])
-	
+		try:
+			print "The largest value word in your rack is: %s : %i" % (max(wordListScore, key=wordListScore.get),wordListScore[max(wordListScore, key=wordListScore.get)])
+		except:
+			pass
+			
 	response = raw_input("\nWould you like to play again? (y \ n) : ")
 		
 	if response[0].lower() != "y":
